@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 const routes: Routes = [
-  {path:"",component:DashboardComponent},
-  {path:"user/:id",component:UserDetailsComponent}
+  {path:"",component:DashboardComponent,data: { animation: 'openClosePage' }},
+  {path:"user/:id",component:UserDetailsComponent,data: { animation: 'openClosePage' }}
 ];
 
 @NgModule({
