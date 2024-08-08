@@ -1,0 +1,26 @@
+.headerProps{
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.logo{
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nagivateText{
+    background-color: gray;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -ms-border-radius: 50px;
+    -o-border-radius: 50px;
+}
+.nagivateText h1{
+    font-size: 70px;
+    font-weight: bold;
+    margin: 0;
+   
+}
