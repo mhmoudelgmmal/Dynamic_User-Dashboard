@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -11,8 +12,8 @@ import { HeaderComponent } from './header/components/header.component';
   ],
   imports: [
     CommonModule,
-    HeaderRoutingModule
-  ],
-
+    HeaderRoutingModule,
+    
+  ]
 })
 export class HeaderModule { }
