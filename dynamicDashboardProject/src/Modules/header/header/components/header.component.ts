@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ChildrenOutletContexts, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { filter, Subject, Subscription, takeUntil } from 'rxjs';
 import {FadeIn, slideInAnimation } from 'src/shared/animations/animations';
 
 @Component({
@@ -9,15 +10,21 @@ import {FadeIn, slideInAnimation } from 'src/shared/animations/animations';
   styleUrls: ['./header.component.css'],
   animations:[slideInAnimation,FadeIn(200,true)]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit,OnDestroy {
   LinkChanges:boolean = false
+  destroy$ = new Subject()
+  private subscription: Subscription = new Subscription();
 
-  constructor(private router:Router,private activatedRoute:ActivatedRoute,private contexts: ChildrenOutletContexts){
+  constructor(private activatedRoute:ActivatedRoute,private contexts: ChildrenOutletContexts,private store:Store){
     
   }
+  ngOnDestroy(): void {
+    this.destroy$.next(true)
+    this.destroy$.unsubscribe()
+    this.subscription.unsubscribe()
+  }
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      
+    this.activatedRoute.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {      
       let page = params['id'];
       page?this.LinkChanges = true:this.LinkChanges = false
   });

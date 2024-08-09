@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DashboardState } from '../../store/state/dashboard.state';
 import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { dashboardData, dashboardList, userData } from '../../interfaces/dashboard';
-import { UserData } from '../../store/actions/dashboard.actions';
+import {  UserData } from '../../store/actions/dashboard.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -11,14 +11,21 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css']
 })
-export class UserDetailsComponent implements OnInit {
+export class UserDetailsComponent implements OnInit,OnDestroy {
   @Select(DashboardState.userData)userData$!:Observable<dashboardData>
   id:string = ""
   userFetchedData!:userData
   constructor(private store:Store,private router:ActivatedRoute){}
-  
+  destroy$ = new Subject()
+  private subscription: Subscription = new Subscription();
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true)
+    this.destroy$.unsubscribe()
+    this.subscription.unsubscribe()
+  }
   ngOnInit(): void {
-     this.router.queryParamMap.subscribe((param:any)=>{
+     this.router.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((param:any)=>{
       this.id =param.params['id']
     })
     this.userData$.subscribe((response:any)=>{
@@ -28,7 +35,7 @@ export class UserDetailsComponent implements OnInit {
     this.getUserData()
   }
   getUserData(){
-    this.store.dispatch(new UserData(this.id))
+    this.store.dispatch(new UserData(this.id)).subscribe()
   }
 
 }
