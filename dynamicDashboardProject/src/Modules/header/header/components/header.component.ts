@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { ChildrenOutletContexts, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ChildrenOutletContexts, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import {FadeIn, slideInAnimation } from 'src/shared/animations/animations';
 
 @Component({
@@ -8,12 +9,20 @@ import {FadeIn, slideInAnimation } from 'src/shared/animations/animations';
   styleUrls: ['./header.component.css'],
   animations:[slideInAnimation,FadeIn(200,true)]
 })
-export class HeaderComponent {
-  link:string
+export class HeaderComponent implements OnInit {
+  LinkChanges:boolean = false
 
-  constructor(private router:Router,private contexts: ChildrenOutletContexts){
-    this.link = this.router.url
+  constructor(private router:Router,private activatedRoute:ActivatedRoute,private contexts: ChildrenOutletContexts){
+    
   }
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      
+      let page = params['page'];
+      page?this.LinkChanges = true:this.LinkChanges = false
+  });
+  }
+
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
