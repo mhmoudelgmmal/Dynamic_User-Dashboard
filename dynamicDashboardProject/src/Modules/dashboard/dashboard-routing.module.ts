@@ -5,7 +5,7 @@ import { UserDetailsComponent } from './components/user-details/user-details.com
 
 const routes: Routes = [
   {path:"",component:DashboardComponent,data: { animation: 'openClosePage' }},
-  {path:"user/:id",component:UserDetailsComponent,data: { animation: 'openClosePage' }}
+  {path:"user",component:UserDetailsComponent,data: { animation: 'openClosePage' }}
 ];
 
 @NgModule({

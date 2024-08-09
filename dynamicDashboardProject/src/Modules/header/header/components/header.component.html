@@ -1,10 +1,10 @@
 <header class="headerProps d-flex mb-3">
-    <div class="logo w-25 h-100">
+    <div class="logo w-25 h-100" [routerLink]="'/'">
             <img src="../../../../assets/Dash_Logo_2018.png" alt="logo" class="w-100 h-100">
     </div>
     <div class="nagivateText w-75 d-flex justify-content-center align-items-center">
-            <h1 [@fadeIn] *ngIf="this.link.includes('user')">User Data</h1>
-            <h1 [@fadeIn] *ngIf="!this.link.includes('user')">Dashboard</h1>
+            <h1 [@fadeIn] *ngIf="LinkChanges">User Data</h1>
+            <h1 [@fadeIn] *ngIf="!LinkChanges">Dashboard</h1>
     </div>
 </header>
 <div [@routeAnimations]="getRouteAnimationData()">
