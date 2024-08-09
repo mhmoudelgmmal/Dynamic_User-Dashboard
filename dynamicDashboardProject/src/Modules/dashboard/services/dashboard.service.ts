@@ -13,4 +13,8 @@ export class DashboardService {
   getAllDataOfUsers(page:number):Observable<dashboardData>{
     return this.http.get<dashboardData>(`https://reqres.in/api/users?page=${page}`)
   }
+  getUserData(id:string):Observable<dashboardData>{
+    return this.http.get<dashboardData>(`https://reqres.in/api/users/${id}`)
+
+  }
 }

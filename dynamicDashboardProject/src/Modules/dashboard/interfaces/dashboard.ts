@@ -1,6 +1,6 @@
 export interface Dashboard {
    dashboardList: dashboardList
-    
+   userData:userData
 }
 export interface dashboardList{
     data:dashboardData[];
@@ -15,4 +15,8 @@ export interface dashboardData{
         first_name:string;
         id:number;
         last_name:string
-    }
+}
+export interface userData{
+    data:dashboardData
+    isLoading:boolean;
+}

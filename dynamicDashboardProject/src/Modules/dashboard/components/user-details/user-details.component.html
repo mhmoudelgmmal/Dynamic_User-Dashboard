@@ -1,1 +1,20 @@
-<p>user-details works!</p>
+<aside class="d-flex justify-content-start w-100" routerLink="/">
+    <section>
+        <div class="contain">
+            <div class="button-up"></div>
+        </div>
+    </section>
+</aside>
+<section class="userData d-flex justify-content-center align-items-center" *ngIf="!(userFetchedData.isLoading)">
+    <div class="w-50 d-flex justify-content-center align-items-center">
+        <div class="text-center">
+            <img [src]="userFetchedData.data.avatar" alt="Avatar" class="mb-3">
+            <h3>{{'Full Name : ' + userFetchedData.data.first_name + userFetchedData.data.last_name}}</h3>
+            <p> {{'Email : ' + userFetchedData.data.email}}</p>
+        </div>
+    </div>
+</section>
+<section *ngIf="userFetchedData.isLoading" class=" d-flex justify-content-center align-items-center">
+    <app-loading></app-loading>
+</section>
+
