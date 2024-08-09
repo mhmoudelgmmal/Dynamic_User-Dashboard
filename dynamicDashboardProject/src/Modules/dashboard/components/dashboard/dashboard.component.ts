@@ -14,9 +14,21 @@ import {MatPaginator} from '@angular/material/paginator';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit,AfterViewInit {
   @Select(DashboardState.dashboardDataandPagesData)dashboardDataandPagesData$!:Observable<dashboardList>
   constructor(private store:Store,private Router:Router){}
+  ngAfterViewInit(): void {
+    this.dashboardDataandPagesData$.subscribe(
+      (data:any) => {       
+         if (data?.data?.length > 0) {          
+          this.dataSource = data
+          
+          this.paginator.length = data.total
+         }
+        
+      }
+    )
+  }
   displayedColumns: string[] = ["id","Avatar","Full Name","Email"]
   dataSource!:any 
   isLoading = true
@@ -26,15 +38,7 @@ export class DashboardComponent implements OnInit {
 
  
   ngOnInit(): void {
-    this.dashboardDataandPagesData$.subscribe(
-      (data:any) => {       
-         if (data?.data?.length > 0) {          
-          this.dataSource = data
-          this.paginator.length = data.total
-         }
-        
-      }
-    )
+    
 
     this.getAllusersData(1)
   }
@@ -58,6 +62,6 @@ export class DashboardComponent implements OnInit {
     // })
   }
   onRowClick(row:any){
-    this.Router.navigate([`/user/${row.id}`])
+    this.Router.navigate([`/user`],{queryParams:{id:row.id}})
   }
 }

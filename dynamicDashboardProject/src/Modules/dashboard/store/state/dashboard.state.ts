@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Dashboard } from '../../interfaces/dashboard';
 import { DashboardService } from '../../services/dashboard.service';
-import { AllUsersData } from '../actions/dashboard.actions';
+import { AllUsersData, UserData } from '../actions/dashboard.actions';
 import { catchError, Subject, takeUntil, tap, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 @State<Dashboard>({
@@ -15,12 +15,20 @@ import { HttpErrorResponse } from '@angular/common/http';
             total:0,
             total_pages:0,
             isLoading:true
+        },userData:{
+             data:{
+                avatar:"",
+                email:"",
+                first_name:"",
+                id:0,
+                last_name:""
+             },
+             isLoading:true
         }
     }
 })
 @Injectable()
 export class DashboardState {
-    constructor(private Router:Router) {}
     @Selector()
     static dashboardLoading (state:Dashboard){
         return state.dashboardList.isLoading;
@@ -32,6 +40,10 @@ export class DashboardState {
     @Selector()
     static dashboardDataandPagesData (state:Dashboard){
         return state.dashboardList;
+    }
+    @Selector()
+    static userData (state:Dashboard){
+        return state.userData;
     }
 
     destroyed$ = new Subject<boolean>()
@@ -78,5 +90,49 @@ export class DashboardState {
             })
         )
         
+    }
+    @Action(UserData)
+    getUserData({ patchState }:StateContext<Dashboard>,{payload}:any){
+        patchState({
+            userData: {
+                data: {
+                    avatar:"",
+                    email:"",
+                    first_name:"",
+                    id:0,
+                    last_name:""
+                },                
+                isLoading: true
+            }
+        })
+        return this.dashboardService.getUserData(payload).pipe(
+            takeUntil(this.destroyed$),
+            tap((res:any) => {
+                
+                patchState({
+                    userData: {
+                        data: res.data,                        
+                        isLoading: false
+                    }
+                })
+            }
+            ),
+            catchError((err:HttpErrorResponse) => {
+                patchState({
+                    userData: {
+                        data: {
+                            avatar:"",
+                            email:"",
+                            first_name:"",
+                            id:0,
+                            last_name:""
+                        },
+                        
+                        isLoading: false
+                    }
+                });
+                return throwError(() => err)
+            })
+        )
     }
 }

@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       
-      let page = params['page'];
+      let page = params['id'];
       page?this.LinkChanges = true:this.LinkChanges = false
   });
   }
