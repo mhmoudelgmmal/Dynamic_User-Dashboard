@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit,AfterViewInit,OnDestroy {
   ngOnInit(): void {
     this.getAllusersData(1)
   }
+  
   getAllusersData(pageNumber:any){
     
     if (this.isPaginatorChecked) {
