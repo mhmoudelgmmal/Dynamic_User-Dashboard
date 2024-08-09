@@ -62,7 +62,7 @@ export class DashboardState {
             }
         })
         return this.dashboardService.getAllDataOfUsers(payload).pipe(
-            takeUntil(this.destroyed$),
+            
             tap((res:any) => {
                 
                 patchState({
@@ -106,7 +106,7 @@ export class DashboardState {
             }
         })
         return this.dashboardService.getUserData(payload).pipe(
-            takeUntil(this.destroyed$),
+            
             tap((res:any) => {
                 
                 patchState({
@@ -135,4 +135,5 @@ export class DashboardState {
             })
         )
     }
+    
 }
